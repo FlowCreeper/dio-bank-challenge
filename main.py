@@ -22,7 +22,7 @@ def deposit(entry: float, balance: float, statement: list[str], /):
     return balance, statement
 
   balance += entry
-  statement.append(f"+\t\tR$ {entry:.2f} : {datetime.now()}")
+  statement.append(f"+\t\tR$ {entry:.2f}\t: {datetime.now()}")
   double_enter_print(f"Depósito no valor de R$ {entry:.2f} realizado com sucesso!")
 
   return balance, statement
@@ -42,7 +42,7 @@ def withdraw(*, entry: float, balance: float, statement: list[str], count: int, 
 
   balance -= entry
   count += 1
-  statement.append(f"-\t\tR$ {entry:.2f} : {datetime.now()}")
+  statement.append(f"-\t\tR$ {entry:.2f}\t: {datetime.now()}")
   double_enter_print(f"Saque no valor de R$ {entry:.2f} realizado com sucesso!")
 
   return balance, statement
@@ -52,7 +52,7 @@ def get_statement(balance: float, /, *, statement: list):
     for i in statement:
       print(i)
       
-    double_enter_print(f"Saldo = \tR$ {balance:.2f} : {datetime.now()}")
+    double_enter_print(f"Saldo = \tR$ {balance:.2f}\t: {datetime.now()}")
   else:
     double_enter_print("Extrato vazio")
 
