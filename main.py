@@ -6,12 +6,12 @@ def text_divisor(content="", size=48, character='='):
 
 def input_float_validation(input_message=""):
   try:
-    entry = ""
-    entry = float(input(input_message))
+    entry = input(input_message)
+    float_entry = float(entry)
   except ValueError:
-    double_enter_print(f"@ Valor inválido - \"{entry}\"")
+    double_enter_print(f"@ Valor inválido - \"{float_entry}\"")
     return 
-  return entry
+  return float_entry
 
 def double_enter_print(string=""):
   print(string, end="\n\n")
@@ -19,33 +19,33 @@ def double_enter_print(string=""):
 def deposit(entry: float, balance: float, statement: list[str], /):
   if not entry:
     double_enter_print("Voltando ao menu...")
-    return balance, statement
+    return balance
 
   balance += entry
   statement.append(f"+\t\tR$ {entry:.2f}\t: {datetime.now()}")
   double_enter_print(f"Depósito no valor de R$ {entry:.2f} realizado com sucesso!")
 
-  return balance, statement
+  return balance
 
 def withdraw(*, entry: float, balance: float, statement: list[str], count: int, limit: float):
   if not entry:
     double_enter_print("Voltando ao menu...")
-    return balance, statement
+    return balance
   
   if entry > balance:
     double_enter_print(f"@ Valor excede o valor na conta de R$ {balance:.2f} | R$ {entry:.2f}")
-    return
+    return balance
 
   if entry > limit:
     double_enter_print(f"@ Valor excede o valor de saque máximo de R$ {limit:.2f} | R$ {entry:.2f}")
-    return
+    return balance
 
   balance -= entry
   count += 1
   statement.append(f"-\t\tR$ {entry:.2f}\t: {datetime.now()}")
   double_enter_print(f"Saque no valor de R$ {entry:.2f} realizado com sucesso!")
 
-  return balance, statement
+  return balance
 
 def get_statement(balance: float, /, *, statement: list):
   if statement:
@@ -56,7 +56,7 @@ def get_statement(balance: float, /, *, statement: list):
   else:
     double_enter_print("Extrato vazio")
 
-  return balance, statement
+  return balance
 
 def find_user_by_cpf(users: list[dict], cpf: str):
   for user in users:
@@ -145,7 +145,7 @@ def main():
 
       deposit_entry = input_float_validation("Informe o valor a ser depositado: ")
       if deposit_entry is None: continue
-      balance = deposit(deposit_entry, balance, statement)[0]
+      balance = deposit(deposit_entry, balance, statement)
       menu_entry = None 
 
     elif menu_entry == 2:
@@ -161,7 +161,7 @@ def main():
       if withdraw_entry is None: continue
 
       balance = withdraw(entry=withdraw_entry, balance=balance, statement=statement, count=withdrew_count, 
-                         limit=WITHDRAW_MAX_VALUE)[0]
+                         limit=WITHDRAW_MAX_VALUE)
 
       menu_entry = None
       
