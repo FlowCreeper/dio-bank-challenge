@@ -22,7 +22,7 @@ def deposit(entry: float, balance: float, statement: list[str], /):
     return balance, statement
 
   balance += entry
-  statement.append(f"+ \tR$ {entry:.2f} : {datetime.now()}")
+  statement.append(f"+\t\tR$ {entry:.2f} : {datetime.now()}")
   double_enter_print(f"Depósito no valor de R$ {entry:.2f} realizado com sucesso!")
 
   return balance, statement
@@ -42,7 +42,7 @@ def withdraw(*, entry: float, balance: float, statement: list[str], count: int, 
 
   balance -= entry
   count += 1
-  statement.append(f"- \tR$ {entry:.2f} : {datetime.now()}")
+  statement.append(f"-\t\tR$ {entry:.2f} : {datetime.now()}")
   double_enter_print(f"Saque no valor de R$ {entry:.2f} realizado com sucesso!")
 
   return balance, statement
@@ -118,7 +118,7 @@ def main():
   WITHDRAW_LIMIT_PER_DAY = 10
 
   withdrew_count = 0
-  balance = 0.0
+  balance = 0
   last_loop_date = date.today()
   menu_entry: str = None
   statement: list[str] = []
@@ -145,8 +145,8 @@ def main():
 
       deposit_entry = input_float_validation("Informe o valor a ser depositado: ")
       if deposit_entry is None: continue
-
-      menu_entry = None if deposit(deposit_entry, balance, statement) else menu_entry
+      balance = deposit(deposit_entry, balance, statement)[0]
+      menu_entry = None 
 
     elif menu_entry == 2:
       # Saque logic
@@ -160,8 +160,10 @@ def main():
       withdraw_entry = input_float_validation("Informe o valor a ser sacado: ")
       if withdraw_entry is None: continue
 
-      menu_entry = None if withdraw(entry=withdraw_entry, balance=balance, statement=statement, count=withdrew_count, 
-                                    limit=WITHDRAW_MAX_VALUE) else menu_entry
+      balance = withdraw(entry=withdraw_entry, balance=balance, statement=statement, count=withdrew_count, 
+                         limit=WITHDRAW_MAX_VALUE)[0]
+
+      menu_entry = None
       
     elif menu_entry == 3:
       # Extrato logic
